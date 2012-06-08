@@ -18,7 +18,6 @@ import android.widget.ListView;
 
 public class DiskGolfScoreKeeperMainActivity extends Activity {
 	private List<Player> players;
-//	protected List<String> playerNamesList;
 
 	private ListView playersListView;
 	
@@ -28,10 +27,9 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-//        playerNamesList = new ArrayList<String>();
         this.playersListView = (ListView) findViewById(R.id.playersListView);
         players = new ArrayList<Player>();
-        playersListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, makeArray()));
+        playersListView.setAdapter(new PlayerArrayAdapter(this, R.layout.playerview, players, 1));
         
         
     }
@@ -85,14 +83,11 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 			EditText playerNameEditText = (EditText) dialog.findViewById(R.id.playerNameEditText);
 			Player p = new Player(playerNameEditText.getText().toString());
 			players.add(p);
-//			playerNamesList.add(p.getName());
-	        playersListView.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, makeArray()));
+			playersListView.setAdapter(new PlayerArrayAdapter(context, R.layout.playerview, players, 1));
 	        playerNameEditText.setText("");
 			dialog.dismiss();
 		}
 		
 	}
-    
-    
     
 }

@@ -17,6 +17,10 @@ public class Player {
 		scoreList[hole-1] = score;
 	}
 	
+	public int getScore(Integer hole) {
+		return scoreList[hole-1];
+	}
+	
 	public Integer getTotalScore() {
 		Integer total = 0;
 		for (int i=0; i<scoreList.length; i++) {

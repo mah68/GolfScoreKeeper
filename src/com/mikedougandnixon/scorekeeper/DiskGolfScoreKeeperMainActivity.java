@@ -43,7 +43,7 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 		if (players == null) players = new ArrayList<Player>();
 
 		this.playersListView = (ListView) findViewById(R.id.playersListView);
-		playersListView.setAdapter(new PlayerArrayAdapter(this, R.layout.playerview, players, 1));
+		playersListView.setAdapter(new PlayerArrayAdapter(this, R.layout.playerview, players, holeNumber));
 
 		TextView currentHoleTextView = (TextView) findViewById(R.id.currentHoleTextView);
 		Button previousHoleButton = (Button) findViewById(R.id.previousHoleButton);

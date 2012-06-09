@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,6 +47,8 @@ public class PlayerArrayAdapter extends ArrayAdapter {
 		totalScore.setText(p.getTotalScore());
 		holeScore.setText(p.getScore(holeNumber));
 		playerName.setText(p.getName());
+		
+		Log.d("Disk Golf", "Player View Returned");
 
 		return v;
 	}
@@ -59,6 +62,7 @@ public class PlayerArrayAdapter extends ArrayAdapter {
 		int holeNumber;
 
 		public PlayerButtonOnClickListener(TextView totalScore, TextView holeScore, Player p, int delta, int holeNumber) {
+			Log.d("Disk Golf", "On ClickListener Initialized");
 			this.totalScore = totalScore;
 			this.holeScore = holeScore;
 			this.p = p;

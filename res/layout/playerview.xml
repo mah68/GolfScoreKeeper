@@ -2,26 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/totalScoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+5" />
+        android:text="+5" 
+        android:textColor="#000000"/>
 
     <TextView
         android:id="@+id/playerNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Player Name"
-        android:textSize="30sp" />
+        android:textSize="30sp" 
+        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/holeScoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-1" />
+        android:text="-1"
+        android:textColor="#000000" />
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

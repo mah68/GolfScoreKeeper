@@ -1,7 +1,5 @@
 package com.mikedougandnixon.scorekeeper;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Player {
 	private String myName;
@@ -30,7 +28,7 @@ public class Player {
 	}
 	
 	public Integer getScoreAtHole(Integer hole) {
-		return scoreList[hole];
+		return scoreList[hole-1];
 	}
 	
 	public String getName() {

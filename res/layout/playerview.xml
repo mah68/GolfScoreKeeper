@@ -14,8 +14,8 @@
         android:id="@+id/playerNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="Player Name" />
+        android:text="Player Name"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/holeScoreTextView"
@@ -42,5 +42,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="-" />
-    </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class DiskGolfScoreKeeperMainActivity extends Activity {
 	private static List<Player> players;
@@ -34,13 +32,13 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 		thisContext = this;
 		setContentView(R.layout.main);
 		Bundle extras = getIntent().getExtras();
-		if(extras != null) {
+		if (extras != null) {
 			holeNumber = (Integer) extras.get("holeNumber");
-		}
-		else {
+		} else {
 			holeNumber = 1;
 		}
-		if (players == null) players = new ArrayList<Player>();
+		if (players == null)
+			players = new ArrayList<Player>();
 
 		playersListView = (ListView) findViewById(R.id.playersListView);
 		playersListView.setAdapter(new PlayerArrayAdapter(this, R.layout.playerview, players, holeNumber));
@@ -48,31 +46,57 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 		TextView currentHoleTextView = (TextView) findViewById(R.id.currentHoleTextView);
 		Button previousHoleButton = (Button) findViewById(R.id.previousHoleButton);
 		Button nextHoleButton = (Button) findViewById(R.id.nextHoleButton);
-		
-		currentHoleTextView.setText("Hole "+holeNumber);
+
+		currentHoleTextView.setText("Hole " + holeNumber);
 		previousHoleButton.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
-				if(holeNumber == 1) {
+				if (holeNumber == 1) {
 					holeNumber = 18;
-				}
-				else holeNumber -= 1;
-				newHoleRefreshView();
+				} else
+					holeNumber -= 1;
+				refreshView();
 			}
-			
+
 		});
 		nextHoleButton.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
-				if(holeNumber == 18) {
+				if (holeNumber == 18) {
 					holeNumber = 1;
-				}
-				else holeNumber += 1;
-				newHoleRefreshView();
+				} else
+					holeNumber += 1;
+				refreshView();
 			}
-			
+
 		});
-		
+
+	}
+
+	public void listItemLongPress(final Player p) {
+		final Dialog confirmDialog = onCreateDialog(1);
+		confirmDialog.dismiss();
+//		TextView removePlayerTextView = (TextView) confirmDialog.findViewById(R.id.removePlayerTextView);
+//		removePlayerTextView.setText("Remove " + p.getName() + " from game?");
+		confirmDialog.setTitle("Remove " + p.getName() + " from game?");
+		Button confirmButton = (Button) confirmDialog.findViewById(R.id.confirmButton);
+		confirmButton.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View arg0) {
+				players.remove(p);
+				confirmDialog.dismiss();
+				refreshView();
+			}
+
+		});
+		Button denyButton = (Button) confirmDialog.findViewById(R.id.denyButton);
+		denyButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				confirmDialog.dismiss();
+			}
+		});
+		confirmDialog.show();
+
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,29 +115,26 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void newHoleRefreshView() {
+	private void refreshView() {
 		TextView holeTextView = (TextView) findViewById(R.id.currentHoleTextView);
-		holeTextView.setText("Hole "+holeNumber);
+		holeTextView.setText("Hole " + holeNumber);
 		playersListView.setAdapter(new PlayerArrayAdapter(thisContext, R.layout.playerview, players, holeNumber));
 	}
-	
+
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog = new Dialog(this);
 		switch (id) {
 		case 0:
 			dialog.setContentView(R.layout.playernamedialog);
+			dialog.setTitle("Player Name:");
 			Button addPlayerButton = (Button) dialog.findViewById(R.id.addPlayerButton);
 			addPlayerButton.setOnClickListener(new addPlayerListener(dialog, this));
+			break;
+		case 1:
+			dialog.setContentView(R.layout.removeplayerdialog);
+			break;
 		}
 		return dialog;
-	}
-
-	private String[] makeArray() {
-		String[] s = new String[players.size()];
-		for (int i = 0; i < players.size(); i++) {
-			s[i] = players.get(i).getName();
-		}
-		return s;
 	}
 
 	public class addPlayerListener implements OnClickListener {
@@ -140,12 +161,10 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 		private List<Player> playerList;
 		private int viewId;
 		private int holeNumber;
-		private Context mycontext;
 
 		public PlayerArrayAdapter(Context c, int viewId, List<Player> p, int holeNumber) {
 			super(c, viewId, p);
 			playerList = p;
-			mycontext = c;
 			this.viewId = viewId;
 			this.holeNumber = holeNumber;
 
@@ -163,19 +182,23 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 			Button scoreUpButton = (Button) v.findViewById(R.id.scoreUpButton);
 			Button scoreDownButton = (Button) v.findViewById(R.id.scoreDownButton);
 
-			Player p = playerList.get(position);
+			final Player p = playerList.get(position);
 
 			scoreUpButton.setOnClickListener(new PlayerButtonOnClickListener(totalScore, holeScore, p, 1, holeNumber));
 			scoreDownButton
 					.setOnClickListener(new PlayerButtonOnClickListener(totalScore, holeScore, p, -1, holeNumber));
+			playerName.setOnLongClickListener(new View.OnLongClickListener() {
+
+				public boolean onLongClick(View v) {
+					listItemLongPress(p);
+					return true;
+				}
+				
+			});
 
 			totalScore.setText("" + p.getTotalScore());
 			holeScore.setText("" + p.getScore(holeNumber));
 			playerName.setText(p.getName());
-
-			// LayoutInflater li = LayoutInflater.from(myContext);
-			// View test = li.inflate(android.R.layout.simple_list_item_2,
-			// parent);
 
 			return v;
 		}

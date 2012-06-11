@@ -42,7 +42,7 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 		}
 		if (players == null) players = new ArrayList<Player>();
 
-		this.playersListView = (ListView) findViewById(R.id.playersListView);
+		playersListView = (ListView) findViewById(R.id.playersListView);
 		playersListView.setAdapter(new PlayerArrayAdapter(this, R.layout.playerview, players, holeNumber));
 
 		TextView currentHoleTextView = (TextView) findViewById(R.id.currentHoleTextView);
@@ -54,12 +54,10 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 
 			public void onClick(View arg0) {
 				if(holeNumber == 1) {
-					Toast.makeText(thisContext, "You are at hole 1", Toast.LENGTH_SHORT).show();
-					return;
+					holeNumber = 18;
 				}
-				Intent i = new Intent(thisContext, DiskGolfScoreKeeperMainActivity.class);
-				i.putExtra("holeNumber", holeNumber-1);
-				startActivity(i);
+				else holeNumber -= 1;
+				newHoleRefreshView();
 			}
 			
 		});
@@ -67,12 +65,10 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 
 			public void onClick(View arg0) {
 				if(holeNumber == 18) {
-					Toast.makeText(thisContext, "You are at hole 18", Toast.LENGTH_SHORT).show();
-					return;
+					holeNumber = 1;
 				}
-				Intent i = new Intent(thisContext, DiskGolfScoreKeeperMainActivity.class);
-				i.putExtra("holeNumber", holeNumber+1);
-				startActivity(i);
+				else holeNumber += 1;
+				newHoleRefreshView();
 			}
 			
 		});
@@ -95,6 +91,12 @@ public class DiskGolfScoreKeeperMainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void newHoleRefreshView() {
+		TextView holeTextView = (TextView) findViewById(R.id.currentHoleTextView);
+		holeTextView.setText("Hole "+holeNumber);
+		playersListView.setAdapter(new PlayerArrayAdapter(thisContext, R.layout.playerview, players, holeNumber));
+	}
+	
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog = new Dialog(this);
 		switch (id) {
